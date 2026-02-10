@@ -1,247 +1,384 @@
 <!DOCTYPE html>
-<html lang="fa-IR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Medad Jadoei</title>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>WorldCraft</title>
 
-    <!--=============== FAVICON ===============-->
-    <link
-      rel="shortcut icon"
-      href="./assets/images/magicpencil.ico"
-      type="image/x-icon"
-    />
+<!-- FONT -->
+<link href="https://fonts.cdnfonts.com/css/iranian-sans" rel="stylesheet">
 
-    <!--=============== google font ===============-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
-      rel="stylesheet"
-    />
-        <!--=============== CSS ===============-->
-        <link rel="stylesheet" href="./assets/css/style.css" />
-        <link rel="stylesheet" href="./assets/css/responsive.css" />
-        <link rel="stylesheet" href="styleTest.css">
-      </head>
-      <body class="light-theme">
-    <!--==================== HEADER ====================-->
-    <header>
-        <div class="container">
-          <nav class="navbar">
-            <a href="/" class="logo">وبلاگ آیهان <span>قلی زاده</span></a> 
-  
-            <div class="btn-group">
-              <button class="theme-btn theme-btn-mobile light">
-                <ion-icon name="moon" class="moon"></ion-icon>
-                <ion-icon name="sunny" class="sun"></ion-icon>
-              </button>
-  
-              <button class="nav-menu-btn">
-                <ion-icon name="menu-outline"></ion-icon>
-              </button>
-            </div>
-  
-            <div class="flex-wrapper">
-              <ul class="desktop-nav">
-                <li>
-                    <a href="#" class="nav-link">آرشا افشار طوس</a>
-                </li>
-                <li>
-                  <a href="#" class="nav-link">پروفایل</a>
-                </li>
-                <li>
-                  <a href="./app/ConnectShellSetup11 (5).exe" download class="nav-link">ادوبی ویندوز</a>
-                </li>
-                <li>
-                  <a href="https://www.adobe.com/go/ConnectMac11Plus" class="nav-link">ادوبی مک</a>
-                </li>
-              </ul>
-              <button class="theme-btn theme-btn-desktop light">
-                <ion-icon name="moon" class="moon"></ion-icon>
-                <ion-icon name="sunny" class="sun"></ion-icon>
-              </button>
-            </div>
-  
-            <div class="mobile-nav">
-              <button class="nav-close-btn">
-                <ion-icon name="close-outline"></ion-icon>
-              </button>
-  
-              <div class="wrapper">
-                <p class="h3 nav-title">برنامه های ادوبی کانکت</p>
-                <ul>
-                  <li class="nav-item">
-                    <a href="https://apps.apple.com/us/app/adobe-connect-new/id1533425942" class="nav-link">دانلود برای گوشی اپل</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="https://cafebazaar.ir/app/com.adobe.connect.android.mobile" class="nav-link">دانلود برای گوشی اندروید</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/" class="nav-link">رفرش سایت</a>
-                  </li>
-                </ul>
-              </div>
-  
-              <div>
-                <p class="h3 nav-title">تماس با ما</p>
-                <ul>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">اینستاگرام</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">فیسبوک</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">تویتتر</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </header>
-      <main>
+<style>
 
-      <!--==================== Hero ====================-->
-      <div class="hero">
-        <div class="container">
-          <div class="left">
-            <h1 class="h1"> به <b> وبلاگ آیهان قلی زاده</b> خیلی خوش آمدید <br /></h1>
-            <p class="h3">لینک ورود به کلاس آنلاین دوره در اینجا برای شما قرار گرفته شده </p>
+body{
+font-family:'Iranian Sans',Tahoma;
+direction:rtl;
+background:#0f172a;
+color:white;
+margin:0;
+}
 
+.container{
+width:520px;
+margin:40px auto;
+}
 
-            <div class="btn-group">
-                <a href="#" class="btn btn-secondary">جلسه اول (انجام شده)</a>
-                <a href="https://meet85818761.adobeconnect.com/powerpoint012-2/" class="btn btn-primary">جلسه دوم</a>
-                <a href="#" class="btn btn-secondary">جلسه سوم</a>
-                <a href="recorded-classes.html" class="btn btn-primary">مشاهده جلسات ضبط شده</a>
-              </div>
-            </div>
-            <div class="right">
-                <div class="pattern-bg"></div>
-                <div class="img-box">
-                  <img src="./assets/images/medad.png" alt="" class="hero-img" />
-    
-                  <div class="shape shape-1"></div>
-                  <div class="shape shape-2"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+.box{
+background:#020617;
+padding:18px;
+border-radius:14px;
+margin-bottom:20px;
+border:1px solid #334155;
+}
 
+input,button{
+width:100%;
+padding:10px;
+margin:6px 0;
+border-radius:10px;
+border:1px solid #334155;
+background:#0f172a;
+color:white;
+font-family:inherit;
+}
 
-          <div class="main">
-            <div class="container">
-              
-          <!--==================== BLOG ====================-->
-          <div class="blog">
-            <h2 class="h2">آخرین پیشنهادات پست شده</h2>
+button{
+background:#1d9bf0;
+cursor:pointer;
+}
 
+.row{
+display:flex;
+align-items:center;
+gap:8px;
+}
 
-            <div class="blog-card-group">
-              <div class="blog-card">
+.profile{
+width:42px;
+height:42px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #1d9bf0;
+cursor:pointer;
+}
 
-                <div class="blog-card-banner">
-                  <img
+.tick{
+width:18px;
+height:18px;
+border-radius:50%;
+background:#1d9bf0;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
+}
 
-                  src="./assets/images/powe imag.png"
-                  alt=""
-                  class="blog-banner-img"
-                    />
-                </div>
+.admin{
+background:#1e1b4b;
+}
 
-                <div class="blog-content-wrapper">
-                  <button class="blog-topic text-tiny">پاورپوینت</button>
+.status{
+background:#020617;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+font-size:14px;
+border:1px solid #334155;
+}
 
-                  <h3>
-                    <a href="./ondex.html" class="h3">
-                      آغاز دوره پاورپوینت 2016 کد صفر دوازده
-                    </a>
-                  </h3>
-                  <p class="blog-text">
-                    دوره 012 پاورپوینت آفیس دوهزار و شانزده اختصاصی مداد جادویی
-                    بزودی در این سایت شروع می گردد . جهت ثبت نام در این دوره باید
-                    با شماره 09204106560 تماس بگیرید. با تشکر از همراهی شما عزیزان
-                    انجمن مداد جادویی ...
-                  </p>
-                  <div class="wrapper-flex">
-                    <div class="profile-wrapper">
-                      <img width="50" src="./assets/images/medad.png" alt="" />
-                    </div>
-                    <div class="wrapper">
-                      <a href="#" class="h4">انجمن مداد جادویی</a>
-                      <p class="text-sm">
-                        <time datetime="2022-01-17">1 آگوست 2023</time>
-                        <span class="separator"></span>
-                        <ion-icon name="time-outline"></ion-icon>
-                        <time datetime="PT3M">3 دقیقه</time>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+.deleteBtn{
+background:#dc2626;
+margin-top:5px;
+}
 
-              <div class="blog-card">
-                <div class="blog-card-banner">
-                  <img
-                    src="./assets/images/image_processing20201118-26574-11r9djy.png"
-                    alt="Fast web page loading on a $20 feature phone"
-                    width="250"
-                    class="blog-banner-img"
-                  />
-                </div>
+</style>
+</head>
 
-                <div class="blog-content-wrapper">
-                  <button class="blog-topic text-tiny">آموزشی سایت</button>
+<body>
 
-                  <h3>
-                    <a href="record-sessoins.html" class="h3"
-                      >چگونگی دیدن جلسات ضبط شده دوره</a
-                    >
-                  </h3>
+<div class="container" id="app"></div>
 
-                  <p class="blog-text">
-                    در این مطلب قصد داریم چگونگی تماشای جلسات ضبط شده دوره 
-                    ثبت نامی شما در این سایت را آموزش دهیم. باما همراه شوید
-                  </p>
+<script>
 
-                  <div class="wrapper-flex">
-                    <div class="profile-wrapper">
-                      <img
-                        src="./assets/images/cute-little-boy-student-posing-cartoon-illustration-cartoon-clipart-vector.jpg"
-                        alt="Navid Dev"
-                        width="50"
-                      />
-                    </div>
+/* ================= DATA ================= */
 
-                    <div class="wrapper">
-                      <a href="#" class="h4">آیهان قلی زاده</a>
+let users = JSON.parse(localStorage.getItem("users")) || {
+worldcraft:{p:"admin",v:true,name:"ادمین سایت جنگ جهانی",pic:"",official:true},
+china:{p:"11",v:false,name:"چین",pic:"",official:false},
+russia:{p:"22",v:false,name:"روسیه",pic:"",official:false}
+}
 
-                      <p class="text-sm">
-                        <time datetime="2021-12-10">4 آگوست 2023</time>
-                        <span class="separator"></span>
-                        <ion-icon name="time-outline"></ion-icon>
-                        <time datetime="PT2M">2 دقیقه</time>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+let tweets = JSON.parse(localStorage.getItem("tweets")) || []
 
-              <!--=============== main script ===============-->
-    <script src="./assets/js/script.js"></script>
+let settings = JSON.parse(localStorage.getItem("settings")) || {
+only_verified:false,
+only_official:false,
+no_media:false
+}
 
-    <!--=============== ionicon ===============-->
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
-  </body>
+let current = localStorage.getItem("currentUser") || null
+
+function save(){
+localStorage.setItem("users",JSON.stringify(users))
+localStorage.setItem("tweets",JSON.stringify(tweets))
+localStorage.setItem("settings",JSON.stringify(settings))
+localStorage.setItem("currentUser",current)
+}
+
+/* ================= UI ================= */
+
+function render(){
+
+let html=""
+
+if(!current){
+
+html+=`
+<div class="box">
+<h3>ورود</h3>
+<input id="u" placeholder="نام کاربری">
+<input id="p" type="password" placeholder="رمز">
+<button onclick="login()">ورود</button>
+</div>
+`
+
+}else{
+
+let me=users[current]
+
+html+=`
+<div class="box">
+<div class="row">
+
+<img class="profile"
+src="${me.pic||'https://via.placeholder.com/42'}"
+onclick="changePic()">
+
+<b onclick="changeName()" style="cursor:pointer">
+${me.name}
+</b>
+
+${me.v?'<span class="tick">✓</span>':''}
+
+<button style="margin-right:auto;width:auto" onclick="logout()">خروج</button>
+
+</div>
+
+<input id="tweetText" placeholder="چه خبر؟">
+<input type="file" id="tweetImg">
+<button onclick="sendTweet()">ارسال</button>
+
+</div>
+`
+
+/* ADMIN PANEL */
+
+if(me.official){
+
+html+=`
+<div class="box admin">
+<h4>پنل رسمی</h4>
+
+<div class="status">
+فقط تیک دار ها: <b>${settings.only_verified}</b><br>
+فقط رسمی: <b>${settings.only_official}</b><br>
+مدیا بسته: <b>${settings.no_media}</b>
+</div>
+
+<button onclick="toggle('only_verified')">
+فقط تیک دار ها
+</button>
+
+<button onclick="toggle('only_official')">
+فقط رسمی
+</button>
+
+<button onclick="toggle('no_media')">
+بستن مدیا
+</button>
+
+<hr>
+`
+
+for(let k in users){
+if(!users[k].official){
+html+=`
+<div>
+${users[k].name}
+<button onclick="verify('${k}')">
+${users[k].v?'برداشتن تیک':'دادن تیک'}
+</button>
+</div>
+`
+}
+}
+
+html+=`</div>`
+}
+
+/* TWEETS */
+
+html+=`<div class="box">`
+
+tweets.slice().reverse().forEach((t,i)=>{
+
+let canDelete = (t.user === current) || users[current].official
+
+html+=`
+<div>
+<div class="row">
+<img class="profile" src="${t.pic||'https://via.placeholder.com/42'}">
+<b>${t.name}</b>
+${t.v?'<span class="tick">✓</span>':''}
+</div>
+
+<p>${t.text}</p>
+
+${t.img?`<img src="${t.img}" style="width:100%;border-radius:10px">`:''}
+
+${canDelete ? `<button class="deleteBtn" onclick="deleteTweet(${i})">حذف</button>` : ""}
+
+<hr>
+</div>
+`
+})
+
+html+=`</div>`
+}
+
+document.getElementById("app").innerHTML=html
+}
+
+/* ================= AUTH ================= */
+
+function login(){
+let u=document.getElementById("u").value
+let p=document.getElementById("p").value
+
+if(users[u] && users[u].p===p){
+current=u
+save()
+render()
+}else alert("ورود ناموفق")
+}
+
+function logout(){
+current=null
+save()
+render()
+}
+
+/* ================= PROFILE ================= */
+
+function changeName(){
+let n=prompt("نام جدید")
+if(!n)return
+users[current].name=n
+save()
+render()
+}
+
+function changePic(){
+let inp=document.createElement("input")
+inp.type="file"
+
+inp.onchange=e=>{
+let file=e.target.files[0]
+let reader=new FileReader()
+
+reader.onload=function(){
+users[current].pic=reader.result
+save()
+render()
+}
+
+reader.readAsDataURL(file)
+}
+
+inp.click()
+}
+
+/* ================= TWEETS ================= */
+
+function sendTweet(){
+
+let me=users[current]
+
+if(settings.only_official && !me.official){
+alert("فقط رسمی مجاز است")
+return
+}
+
+if(settings.only_verified && !(me.v||me.official)){
+alert("فقط تیک دار ها")
+return
+}
+
+let text=document.getElementById("tweetText").value
+let file=document.getElementById("tweetImg").files[0]
+
+if(settings.no_media && file && !me.official){
+alert("مدیا بسته است")
+return
+}
+
+if(file){
+let reader=new FileReader()
+reader.onload=function(){
+addTweet(text,reader.result)
+}
+reader.readAsDataURL(file)
+}else addTweet(text,"")
+
+}
+
+function addTweet(text,img){
+
+let me=users[current]
+
+tweets.push({
+user:current,
+name:me.name,
+v:me.v,
+pic:me.pic,
+text:text,
+img:img
+})
+
+save()
+render()
+}
+
+/* ================= DELETE ================= */
+
+function deleteTweet(index){
+
+if(!confirm("حذف شود؟")) return
+
+tweets.splice(tweets.length-1-index,1)
+
+save()
+render()
+}
+
+/* ================= ADMIN ================= */
+
+function verify(u){
+users[u].v=!users[u].v
+save()
+render()
+}
+
+function toggle(s){
+settings[s]=!settings[s]
+save()
+render()
+}
+
+/* ================= INIT ================= */
+
+render()
+
+</script>
+
+</body>
 </html>
-<!--============ ionnnnnn ====================-->

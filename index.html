@@ -4,381 +4,335 @@
 <meta charset="UTF-8">
 <title>WorldCraft</title>
 
-<!-- FONT -->
 <link href="https://fonts.cdnfonts.com/css/iranian-sans" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
+/* ========== GENERAL ========== */
 body{
-font-family:'Iranian Sans',Tahoma;
-direction:rtl;
-background:#0f172a;
-color:white;
-margin:0;
+  font-family:'Iranian Sans',Tahoma;
+  direction:rtl;
+  background:#0f172a;
+  color:white;
+  margin:0;
 }
-
 .container{
-width:520px;
-margin:40px auto;
+  width:520px;
+  margin:40px auto;
+  padding:0 10px;
 }
-
 .box{
-background:#020617;
-padding:18px;
-border-radius:14px;
-margin-bottom:20px;
-border:1px solid #334155;
+  background:#020617;
+  padding:18px;
+  border-radius:14px;
+  margin-bottom:20px;
+  border:1px solid #334155;
 }
-
 input,button{
-width:100%;
-padding:10px;
-margin:6px 0;
-border-radius:10px;
-border:1px solid #334155;
-background:#0f172a;
-color:white;
-font-family:inherit;
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:10px;
+  border:1px solid #334155;
+  background:#0f172a;
+  color:white;
+  font-family:inherit;
 }
-
 button{
-background:#1d9bf0;
-cursor:pointer;
+  background:#1d9bf0;
+  cursor:pointer;
 }
-
 .row{
-display:flex;
-align-items:center;
-gap:8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
 }
-
 .profile{
-width:42px;
-height:42px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid #1d9bf0;
-cursor:pointer;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #1d9bf0;
+  cursor:pointer;
 }
-
 .tick{
-width:18px;
-height:18px;
-border-radius:50%;
-background:#1d9bf0;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:12px;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#1d9bf0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
 }
-
 .admin{
-background:#1e1b4b;
+  background:#1e1b4b;
 }
-
 .status{
-background:#020617;
-padding:10px;
-border-radius:10px;
-margin-bottom:10px;
-font-size:14px;
-border:1px solid #334155;
+  background:#020617;
+  padding:10px;
+  border-radius:10px;
+  margin-bottom:10px;
+  font-size:14px;
+  border:1px solid #334155;
 }
-
 .deleteBtn{
-background:#dc2626;
-margin-top:5px;
+  background:#dc2626;
+  margin-top:5px;
 }
 
+/* ========== LOADING ========== */
+#loading{
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  color:white;font-size:24px;
+  display:flex;align-items:center;justify-content:center;
+  z-index:9999;
+  display:none;
+}
+
+/* ========== RESPONSIVE / MOBILE ========== */
+@media (max-width:600px){
+  .container{
+    width:100%;
+    margin:20px auto;
+    padding:0 10px;
+  }
+  .row{
+    flex-direction:row;
+    justify-content:flex-start;
+  }
+  .profile{
+    width:36px;
+    height:36px;
+  }
+  input,button{
+    font-size:14px;
+    padding:8px;
+  }
+  .status{
+    font-size:13px;
+  }
+  .tick{
+    width:16px;
+    height:16px;
+    font-size:11px;
+  }
+}
 </style>
 </head>
 
 <body>
-
 <div class="container" id="app"></div>
+<div id="loading">در حال بارگذاری...</div>
 
 <script>
+/* ========= SUPABASE ========= */
+const supabaseClient = supabase.createClient(
+  "https://wuktgoyjxpwobkpwwuox.supabase.co",
+  "sb_publishable_e2sWZT-e5Dn0au2v7n4X2w_5v8a8m92"
+)
 
-/* ================= DATA ================= */
+/* ========= GLOBAL ========= */
+let current = null
+let users = {}
+let tweets = []
+let settings = {}
 
-let users = JSON.parse(localStorage.getItem("users")) || {
-worldcraft:{p:"admin",v:true,name:"ادمین سایت جنگ جهانی",pic:"",official:true},
-china:{p:"11",v:false,name:"چین",pic:"",official:false},
-russia:{p:"22",v:false,name:"روسیه",pic:"",official:false}
+function showLoading(show){
+  document.getElementById("loading").style.display = show ? "flex" : "none"
 }
 
-let tweets = JSON.parse(localStorage.getItem("tweets")) || []
-
-let settings = JSON.parse(localStorage.getItem("settings")) || {
-only_verified:false,
-only_official:false,
-no_media:false
+/* ========= LOAD ========= */
+async function loadAll(){
+  showLoading(true)
+  try{
+    let {data: u} = await supabaseClient.from("users").select("*")
+    let {data: t} = await supabaseClient.from("tweets").select("*").order("id")
+    let {data: s} = await supabaseClient.from("settings").select("*").eq("id",1).single()
+    users = {}; u.forEach(x=> users[x.username]=x)
+    tweets = t || []
+    settings = s || settings
+    render()
+  }finally{
+    showLoading(false)
+  }
 }
 
-let current = localStorage.getItem("currentUser") || null
-
-function save(){
-localStorage.setItem("users",JSON.stringify(users))
-localStorage.setItem("tweets",JSON.stringify(tweets))
-localStorage.setItem("settings",JSON.stringify(settings))
-localStorage.setItem("currentUser",current)
-}
-
-/* ================= UI ================= */
-
+/* ========= UI ========= */
 function render(){
+  let html=""
+  if(!current){
+    html+=`
+    <div class="box">
+      <h3>ورود</h3>
+      <input id="u" placeholder="نام کاربری">
+      <input id="p" type="password" placeholder="رمز">
+      <button onclick="login()">ورود</button>
+    </div>`
+  }else{
+    let me=users[current]
+    html+=`
+    <div class="box">
+      <div class="row">
+        <img class="profile" src="${me.pic||'https://via.placeholder.com/42'}" onclick="changePic()">
+        <b onclick="changeName()" style="cursor:pointer">${me.name}</b>
+        ${me.verified?'<span class="tick">✓</span>':''}
+        <button style="margin-right:auto;width:auto" onclick="logout()">خروج</button>
+      </div>
+      <input id="tweetText" placeholder="چه خبر؟">
+      <input type="file" id="tweetImg">
+      <button onclick="sendTweet()">ارسال</button>
+    </div>`
 
-let html=""
+    if(me.official){
+      html+=`
+      <div class="box admin">
+        <h4>پنل رسمی</h4>
+        <div class="status">
+          فقط تیک دار ها: <b>${settings.only_verified}</b><br>
+          فقط رسمی: <b>${settings.only_official}</b><br>
+          مدیا بسته: <b>${settings.no_media}</b>
+        </div>
+        <button onclick="toggle('only_verified')">فقط تیک دار ها</button>
+        <button onclick="toggle('only_official')">فقط رسمی</button>
+        <button onclick="toggle('no_media')">بستن مدیا</button>
+        <hr>`
+      for(let k in users){
+        if(!users[k].official){
+          html+=`
+          <div>
+            ${users[k].name}
+            <button onclick="verify('${k}')">${users[k].verified?'برداشتن تیک':'دادن تیک'}</button>
+          </div>`
+        }
+      }
+      html+=`</div>`
+    }
 
-if(!current){
-
-html+=`
-<div class="box">
-<h3>ورود</h3>
-<input id="u" placeholder="نام کاربری">
-<input id="p" type="password" placeholder="رمز">
-<button onclick="login()">ورود</button>
-</div>
-`
-
-}else{
-
-let me=users[current]
-
-html+=`
-<div class="box">
-<div class="row">
-
-<img class="profile"
-src="${me.pic||'https://via.placeholder.com/42'}"
-onclick="changePic()">
-
-<b onclick="changeName()" style="cursor:pointer">
-${me.name}
-</b>
-
-${me.v?'<span class="tick">✓</span>':''}
-
-<button style="margin-right:auto;width:auto" onclick="logout()">خروج</button>
-
-</div>
-
-<input id="tweetText" placeholder="چه خبر؟">
-<input type="file" id="tweetImg">
-<button onclick="sendTweet()">ارسال</button>
-
-</div>
-`
-
-/* ADMIN PANEL */
-
-if(me.official){
-
-html+=`
-<div class="box admin">
-<h4>پنل رسمی</h4>
-
-<div class="status">
-فقط تیک دار ها: <b>${settings.only_verified}</b><br>
-فقط رسمی: <b>${settings.only_official}</b><br>
-مدیا بسته: <b>${settings.no_media}</b>
-</div>
-
-<button onclick="toggle('only_verified')">
-فقط تیک دار ها
-</button>
-
-<button onclick="toggle('only_official')">
-فقط رسمی
-</button>
-
-<button onclick="toggle('no_media')">
-بستن مدیا
-</button>
-
-<hr>
-`
-
-for(let k in users){
-if(!users[k].official){
-html+=`
-<div>
-${users[k].name}
-<button onclick="verify('${k}')">
-${users[k].v?'برداشتن تیک':'دادن تیک'}
-</button>
-</div>
-`
-}
+    html+=`<div class="box">`
+    tweets.slice().reverse().forEach((t)=>{
+      let canDelete = (t.username === current) || users[current].official
+      html+=`
+      <div>
+        <div class="row">
+          <img class="profile" src="${t.pic||'https://via.placeholder.com/42'}">
+          <b>${t.name}</b>
+          ${t.verified?'<span class="tick">✓</span>':''}
+        </div>
+        <p>${t.text}</p>
+        ${t.image?`<img src="${t.image}" style="width:100%;border-radius:10px">`:''}
+        ${canDelete ? `<button class="deleteBtn" onclick="deleteTweet(${t.id})">حذف</button>` : ""}
+        <hr>
+      </div>`
+    })
+    html+=`</div>`
+  }
+  document.getElementById("app").innerHTML=html
 }
 
-html+=`</div>`
-}
-
-/* TWEETS */
-
-html+=`<div class="box">`
-
-tweets.slice().reverse().forEach((t,i)=>{
-
-let canDelete = (t.user === current) || users[current].official
-
-html+=`
-<div>
-<div class="row">
-<img class="profile" src="${t.pic||'https://via.placeholder.com/42'}">
-<b>${t.name}</b>
-${t.v?'<span class="tick">✓</span>':''}
-</div>
-
-<p>${t.text}</p>
-
-${t.img?`<img src="${t.img}" style="width:100%;border-radius:10px">`:''}
-
-${canDelete ? `<button class="deleteBtn" onclick="deleteTweet(${i})">حذف</button>` : ""}
-
-<hr>
-</div>
-`
-})
-
-html+=`</div>`
-}
-
-document.getElementById("app").innerHTML=html
-}
-
-/* ================= AUTH ================= */
-
+/* ========= AUTH ========= */
 function login(){
-let u=document.getElementById("u").value
-let p=document.getElementById("p").value
+  let u=document.getElementById("u").value
+  let p=document.getElementById("p").value
+  if(users[u] && users[u].password===p){ current=u; render() }
+  else alert("ورود ناموفق")
+}
+function logout(){ current=null; render() }
 
-if(users[u] && users[u].p===p){
-current=u
-save()
-render()
-}else alert("ورود ناموفق")
+/* ========= PROFILE ========= */
+async function changeName(){
+  let n=prompt("نام جدید"); if(!n) return
+  showLoading(true)
+  try{
+    await supabaseClient.from("users").update({name:n}).eq("username",current)
+    await loadAll()
+  }finally{ showLoading(false) }
+}
+async function changePic(){
+  let inp=document.createElement("input"); inp.type="file"
+  inp.onchange=e=>{
+    let file=e.target.files[0]
+    let reader=new FileReader()
+    reader.onload=async ()=>{
+      showLoading(true)
+      try{
+        await supabaseClient.from("users").update({pic:reader.result}).eq("username",current)
+        await loadAll()
+      }finally{ showLoading(false) }
+    }
+    reader.readAsDataURL(file)
+  }
+  inp.click()
 }
 
-function logout(){
-current=null
-save()
-render()
-}
-
-/* ================= PROFILE ================= */
-
-function changeName(){
-let n=prompt("نام جدید")
-if(!n)return
-users[current].name=n
-save()
-render()
-}
-
-function changePic(){
-let inp=document.createElement("input")
-inp.type="file"
-
-inp.onchange=e=>{
-let file=e.target.files[0]
-let reader=new FileReader()
-
-reader.onload=function(){
-users[current].pic=reader.result
-save()
-render()
-}
-
-reader.readAsDataURL(file)
-}
-
-inp.click()
-}
-
-/* ================= TWEETS ================= */
-
+/* ========= TWEETS ========= */
 function sendTweet(){
+  let me=users[current]; if(!me) return
+  if(settings.only_official && !me.official) return alert("فقط رسمی مجاز است")
+  if(settings.only_verified && !(me.verified||me.official)) return alert("فقط تیک دار ها")
 
-let me=users[current]
+  let text=document.getElementById("tweetText").value.trim()
+  if(!text) return alert("نمی توانید توییت خالی ارسال کنید!")
 
-if(settings.only_official && !me.official){
-alert("فقط رسمی مجاز است")
-return
+  let file=document.getElementById("tweetImg").files[0]
+  if(settings.no_media && file && !me.official) return alert("مدیا بسته است")
+
+  if(file){
+    let reader=new FileReader()
+    reader.onload=()=> addTweet(text,reader.result)
+    reader.readAsDataURL(file)
+  }else addTweet(text,"")
 }
 
-if(settings.only_verified && !(me.v||me.official)){
-alert("فقط تیک دار ها")
-return
+async function addTweet(text,img){
+  showLoading(true)
+  try{
+    let me=users[current]
+    await supabaseClient.from("tweets").insert({
+      username:current,
+      name:me.name,
+      verified:me.verified,
+      pic:me.pic,
+      text:text,
+      image:img
+    })
+    await loadAll()
+  }finally{ showLoading(false) }
 }
 
-let text=document.getElementById("tweetText").value
-let file=document.getElementById("tweetImg").files[0]
-
-if(settings.no_media && file && !me.official){
-alert("مدیا بسته است")
-return
+/* ========= DELETE ========= */
+async function deleteTweet(id){
+  if(!confirm("حذف شود؟")) return
+  showLoading(true)
+  try{
+    await supabaseClient.from("tweets").delete().eq("id",id)
+    await loadAll()
+  }finally{ showLoading(false) }
 }
 
-if(file){
-let reader=new FileReader()
-reader.onload=function(){
-addTweet(text,reader.result)
+/* ========= ADMIN ========= */
+async function verify(u){
+  let newVal=!users[u].verified
+  showLoading(true)
+  try{
+    await supabaseClient.from("users").update({verified:newVal}).eq("username",u)
+    await loadAll()
+  }finally{ showLoading(false) }
 }
-reader.readAsDataURL(file)
-}else addTweet(text,"")
-
-}
-
-function addTweet(text,img){
-
-let me=users[current]
-
-tweets.push({
-user:current,
-name:me.name,
-v:me.v,
-pic:me.pic,
-text:text,
-img:img
-})
-
-save()
-render()
+async function toggle(s){
+  let obj={}; obj[s]=!settings[s]
+  showLoading(true)
+  try{
+    await supabaseClient.from("settings").update(obj).eq("id",1)
+    await loadAll()
+  }finally{ showLoading(false) }
 }
 
-/* ================= DELETE ================= */
-
-function deleteTweet(index){
-
-if(!confirm("حذف شود؟")) return
-
-tweets.splice(tweets.length-1-index,1)
-
-save()
-render()
-}
-
-/* ================= ADMIN ================= */
-
-function verify(u){
-users[u].v=!users[u].v
-save()
-render()
-}
-
-function toggle(s){
-settings[s]=!settings[s]
-save()
-render()
-}
-
-/* ================= INIT ================= */
-
-render()
-
+/* ========= INIT ========= */
+loadAll()
 </script>
-
 </body>
 </html>
